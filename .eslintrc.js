@@ -19,6 +19,7 @@ module.exports = {
   ],
   plugins: [
     'react-refresh',
+    'react-compiler',
   ],
   settings: {
     'import/resolver': {
@@ -31,6 +32,7 @@ module.exports = {
     'no-console': process.env.NODEV === 'production' ? 'error' : 'off',
     'react/react-in-jsx-scope': 'off',
     'react-refresh/only-export-components': 'error',
+    'react-compiler/react-compiler': 'error',
   },
   overrides: [
     {
