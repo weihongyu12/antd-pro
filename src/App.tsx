@@ -1,4 +1,4 @@
-import { lazy } from 'react';
+import { useEffect, lazy } from 'react';
 import { HashRouter, Route, Routes } from 'react-router';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
@@ -6,6 +6,7 @@ import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import type { FC } from 'react';
 import 'dayjs/locale/zh-cn';
+import { register } from './serviceWorkerRegistration';
 
 const DefaultLayout = lazy(async () => import('./layouts/Default'));
 
@@ -14,6 +15,10 @@ const Welcome = lazy(async () => import('./pages/Welcome'));
 const queryClient = new QueryClient();
 
 const App: FC = function App() {
+  useEffect(() => {
+    register();
+  }, []);
+
   return (
     <QueryClientProvider client={queryClient}>
       <ConfigProvider theme={{ cssVar: true }} locale={zhCN}>
