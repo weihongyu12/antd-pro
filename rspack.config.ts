@@ -90,6 +90,8 @@ export default defineConfig({
     ],
   },
   output: {
+    filename: '[name].[contenthash:8].js',
+    clean: true,
     crossOriginLoading: 'anonymous',
   },
   plugins: [
@@ -140,4 +142,5 @@ export default defineConfig({
   experiments: {
     css: true,
   },
+  devtool: isDev ? 'eval-cheap-module-source-map' : false,
 });
