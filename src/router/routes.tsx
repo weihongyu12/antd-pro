@@ -1,6 +1,5 @@
 import { HomeOutlined } from '@ant-design/icons';
-
-import type { Route } from '@ant-design/pro-layout/es/typing';
+import type { Route } from '@ant-design/pro-components/lib/layout/typing';
 
 const routes: Route[] = [
   {
