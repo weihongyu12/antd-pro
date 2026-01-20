@@ -1,6 +1,6 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { defineConfig } from 'orval';
 
+// eslint-disable-next-line @typescript-eslint/no-unsafe-call
 export default defineConfig({
   api: {
     input: './oneapi.json',

@@ -28,7 +28,7 @@ precacheAndRoute(self.__WB_MANIFEST);
 // Set up App Shell-style routing, so that all navigation requests
 // are fulfilled with your index.html shell. Learn more at
 // https://developers.google.com/web/fundamentals/architecture/app-shell
-const fileExtensionRegexp = /\/[^/?]+\.[^/]+$/;
+const fileExtensionRegexp = /\/[^/?][^./?]*\.[^/]+$/;
 registerRoute(
   // Return false to exempt requests from being fulfilled by index.html.
   ({ request, url }: { request: Request; url: URL }) => {
@@ -44,7 +44,7 @@ registerRoute(
 
     // If this looks like a URL for a resource, because it contains
     // a file extension, skip.
-    if (url.pathname.match(fileExtensionRegexp)) {
+    if (fileExtensionRegexp.test(url.pathname)) {
       return false;
     }
 
@@ -73,9 +73,12 @@ registerRoute(
 // This allows the web app to trigger skipWaiting via
 // registration.waiting.postMessage({type: 'SKIP_WAITING'})
 self.addEventListener('message', (event) => {
-  if (event.data && event.data.type === 'SKIP_WAITING') {
-    self.skipWaiting();
+  if (event.data && (event.data as { type: string }).type === 'SKIP_WAITING') {
+    self.skipWaiting().catch((error: unknown) => {
+      console.error('Skip waiting error:', error);
+    });
   }
 });
+/* eslint-enable no-restricted-globals */
 
 // Any other custom service worker logic can go here.

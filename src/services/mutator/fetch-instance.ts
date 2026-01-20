@@ -10,7 +10,7 @@ export const fetchInstance = async <T>(
     body,
   }: {
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
-    params?: Record<string, unknown>;
+    params?: Record<string, string>;
     body?: BodyType<unknown>;
     responseType?: string;
   },
@@ -18,15 +18,16 @@ export const fetchInstance = async <T>(
   let targetUrl = `${baseURL}${url}`;
 
   if (params) {
-    targetUrl += `?${new URLSearchParams(params)}`;
+    const searchParams = new URLSearchParams(params);
+    targetUrl += `?${searchParams.toString()}`;
   }
 
   const response = await fetch(targetUrl, {
     method,
-    body,
+    body: body as BodyInit | undefined,
   });
 
-  return response.json();
+  return response.json() as Promise<T>;
 };
 
 export default fetchInstance;

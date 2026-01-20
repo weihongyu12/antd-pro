@@ -1,6 +1,5 @@
 /**
- * @filename: lint-staged.config.js
- * @type {import('lint-staged').Configuration}
+ * Lint staged configuration
  */
 export default {
   '**/*.{js,ts,jsx,tsx}': [

@@ -1,3 +1,4 @@
+import { useCallback, useMemo } from 'react';
 import type { FC, ReactNode } from 'react';
 import { useNavigate } from 'react-router';
 import {
@@ -6,7 +7,8 @@ import {
   UserOutlined,
 } from '@ant-design/icons';
 import { createStyles } from 'antd-style';
-import type { MenuProps } from 'antd';
+import type { MenuProps, DropdownProps } from 'antd';
+import type { MenuInfo } from 'rc-menu/lib/interface';
 import HeaderDropdown from '../HeaderDropdown';
 
 export interface AvatarDropdownProps {
@@ -38,13 +40,13 @@ const AvatarDropdown: FC<AvatarDropdownProps> = function AvatarDropdown({
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { styles } = useStyles();
 
-  const onMenuClick: MenuProps['onClick'] = (event) => {
+  const onMenuClick: MenuProps['onClick'] = useCallback((event: MenuInfo) => {
     const { key } = event;
 
     navigate(`/account/${key}`);
-  };
+  }, [navigate]);
 
-  const menuItems = [
+  const menuItems = useMemo(() => [
     ...(menu
       ? [
         {
@@ -67,15 +69,20 @@ const AvatarDropdown: FC<AvatarDropdownProps> = function AvatarDropdown({
       icon: <LogoutOutlined />,
       label: '退出登录',
     },
-  ];
+  ], [menu]);
+
+  const menuConfig: DropdownProps['menu'] = useMemo(
+    () => ({
+      selectedKeys: [],
+      onClick: onMenuClick,
+      items: menuItems,
+    }),
+    [menuItems, onMenuClick],
+  );
 
   return (
     <HeaderDropdown
-      menu={{
-        selectedKeys: [],
-        onClick: onMenuClick,
-        items: menuItems,
-      }}
+      menu={menuConfig}
     >
       {children}
     </HeaderDropdown>

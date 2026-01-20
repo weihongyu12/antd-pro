@@ -19,8 +19,8 @@
     "allowJs": true
   },
   "include": [
-    ".eslintrc.js",
-    "babel.config.js",
+    ".eslintrc.cjs",
+    "babel.config.cjs",
     "rspack.config.ts",
     "jest.config.ts",
     "*.config.js",
