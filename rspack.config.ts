@@ -32,6 +32,7 @@ const config: Configuration = {
   },
   devServer: {
     historyApiFallback: true,
+    hot: true,
   },
   resolve: {
     extensions: ['...', '.ts', '.tsx', '.jsx'],
@@ -168,19 +169,19 @@ const config: Configuration = {
     ],
   },
   output: {
-    filename: '[name].[contenthash:8].js',
+    filename: isProduction ? '[name].[contenthash:8].js' : undefined,
     clean: true,
-    module: true,
-    chunkFormat: 'module',
-    chunkLoading: 'import',
-    workerChunkLoading: 'import',
+    module: isProduction,
+    chunkFormat: isProduction ? 'module' : undefined,
+    chunkLoading: isProduction ? 'import' : undefined,
+    workerChunkLoading: isProduction ? 'import' : undefined,
     crossOriginLoading: 'anonymous',
   },
   plugins: [
     new rspack.SubresourceIntegrityPlugin(),
     new rspack.HtmlRspackPlugin({
       template: './index.html',
-      scriptLoading: 'module',
+      scriptLoading: isProduction ? 'module' : 'defer',
     }),
     isProduction ? new InjectManifest({
       swSrc: './src/service-worker.ts',
@@ -227,7 +228,7 @@ const config: Configuration = {
   },
   experiments: {
     css: true,
-    outputModule: true,
+    outputModule: isProduction,
   },
   devtool: isDev ? 'eval-cheap-module-source-map' : false,
   lazyCompilation: false,
