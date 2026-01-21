@@ -7,9 +7,10 @@ const Welcome = lazy(() => import('@/pages/Welcome'));
 const menu: Route[] = [
   {
     index: true,
+    path: '/',
     Component: Welcome,
     name: '欢迎',
-    icon: HomeOutlined,
+    icon: <HomeOutlined />,
   },
 ];
 

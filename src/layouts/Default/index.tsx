@@ -1,4 +1,4 @@
-import { useMemo, useCallback } from 'react';
+import { Suspense, useMemo, useCallback } from 'react';
 import type { FC, ReactNode } from 'react';
 import { Outlet } from 'react-router';
 import { ProLayout, getMenuData } from '@ant-design/pro-components';
@@ -86,7 +86,9 @@ const DefaultLayout: FC = function DefaultLayout() {
       route={routeConfig}
       waterMarkProps={waterMarkConfig}
     >
-      <Outlet />
+      <Suspense>
+        <Outlet />
+      </Suspense>
     </ProLayout>
   );
 };
