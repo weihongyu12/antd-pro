@@ -6,8 +6,9 @@ import { ConfigProvider } from 'antd';
 import zhCN from 'antd/locale/zh_CN';
 import type { FC } from 'react';
 import 'dayjs/locale/zh-cn';
-import router from './router';
-import { register } from './serviceWorkerRegistration';
+import router from '@/router';
+import { register } from '@/serviceWorkerRegistration';
+import { AppLoading } from '@/components';
 
 const queryClient = new QueryClient();
 
@@ -23,7 +24,7 @@ const App: FC = function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ConfigProvider theme={antdTheme} locale={zhCN}>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<AppLoading />}>
           <RouterProvider router={router} />
         </Suspense>
       </ConfigProvider>
