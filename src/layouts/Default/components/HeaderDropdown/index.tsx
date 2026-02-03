@@ -33,7 +33,6 @@ const HeaderDropdown: FC<HeaderDropdownProps> = function HeaderDropdown({
   return (
     <Dropdown
       overlayClassName={clsx(styles.dropdown, overlayClassName)}
-      /* eslint-disable-next-line react/jsx-props-no-spreading */
       {...props}
     />
   );

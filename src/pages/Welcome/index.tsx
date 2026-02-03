@@ -1,10 +1,11 @@
 import type { FC } from 'react';
 import { PageContainer, ProCard } from '@ant-design/pro-components';
 import { createStyles } from 'antd-style';
+import background from './assets/background.png';
 
 const useStyles = createStyles(({ css, token }) => ({
   welcomeDiv: css`
-    background-image: url("https://gw.alipayobjects.com/mdn/rms_a9745b/afts/img/A*BuFmQqsB2iAAAAAAAAAAAAAAARQnAQ");
+    background-image: url("${background}");
     background-repeat: no-repeat;
     background-position: 100% -30%;
     background-size: 274px auto;

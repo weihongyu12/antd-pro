@@ -7,9 +7,9 @@ import type { Configuration, RspackPluginInstance } from '@rspack/core';
 import { ReactRefreshRspackPlugin } from '@rspack/plugin-react-refresh';
 import { InjectManifest } from '@aaroon/workbox-rspack-plugin';
 import ImageMinimizerPlugin from 'image-minimizer-webpack-plugin';
-import type * as Compression from 'compression-webpack-plugin';
-import type * as ESLintPluginType from 'eslint-rspack-plugin';
-import type * as NodePolyfillType from 'node-polyfill-webpack-plugin';
+import Compression from 'compression-webpack-plugin';
+import ESLintPluginType from 'eslint-rspack-plugin';
+import NodePolyfillType from 'node-polyfill-webpack-plugin';
 
 const require = createRequire(import.meta.url);
 
@@ -103,13 +103,17 @@ const config: Configuration = {
       },
       {
         test: /\.(jpe?g|png|gif|tif|webp|avif)$/i,
-        enforce: 'pre',
+        type: 'asset/resource',
+      },
+      {
+        test: /\.(jpe?g|png|gif|tif|webp|avif)$/i,
+        type: 'asset/resource',
         use: [
           {
             loader: ImageMinimizerPlugin.loader,
             options: {
               minimizer: {
-                implementation: ImageMinimizerPlugin.imageminMinify,
+                implementation: ImageMinimizerPlugin.sharpMinify,
                 options: {
                   plugins: [
                     ['gifsicle', { optimizationLevel: 3, interlaced: true }],
@@ -145,7 +149,7 @@ const config: Configuration = {
                 {
                   // 可以使用"?as=webp"生成器,生成 WebP 图片格式
                   preset: 'webp',
-                  implementation: ImageMinimizerPlugin.imageminGenerate,
+                  implementation: ImageMinimizerPlugin.sharpGenerate,
                   options: {
                     plugins: [['imagemin-webp', { quality: 100, lossless: true }]],
                   },
@@ -164,7 +168,6 @@ const config: Configuration = {
             },
           },
         ],
-        type: 'asset/resource',
       },
     ],
   },
@@ -192,7 +195,7 @@ const config: Configuration = {
       // See https://github.com/cra-template/pwa/issues/13#issuecomment-722667270
       maximumFileSizeToCacheInBytes: 5 * 1024 * 1024,
     }) : null,
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+
     isDev ? new ReactRefreshRspackPlugin() : null,
     // brotli 预压缩
     isProduction ? new CompressionPlugin({

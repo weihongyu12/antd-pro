@@ -2,7 +2,7 @@ import { Suspense, useMemo, useCallback } from 'react';
 import type { FC, ReactNode } from 'react';
 import { Outlet } from 'react-router';
 import { ProLayout, getMenuData } from '@ant-design/pro-components';
-import routes from '@/router/menu';
+import menu from '@/router/menu';
 import { AvatarDropdown } from './components';
 
 /**
@@ -17,7 +17,7 @@ function AvatarRender(_: unknown, avatarChildren: ReactNode): ReactNode {
 
 const DefaultLayout: FC = function DefaultLayout() {
   const { menuData } = getMenuData(
-    routes,
+    menu,
     { locale: false },
   );
 

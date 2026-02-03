@@ -11,7 +11,7 @@ export const fetchInstance = async <T>(
   }: {
     method: 'GET' | 'POST' | 'PUT' | 'DELETE' | 'PATCH';
     params?: Record<string, string>;
-    body?: BodyType<unknown>;
+    body?: BodyType;
     responseType?: string;
   },
 ): Promise<T> => {

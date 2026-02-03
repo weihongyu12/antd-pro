@@ -43,7 +43,9 @@ async function registerValidSW(swUrl: string, config?: Config) {
             // At this point, the updated precached content has been fetched,
             // but the previous service worker will still serve the older
             // content until all client tabs are closed.
-            console.log('New content is available and will be used when all tabs for this page are closed.');
+            console.log(
+              'New content is available and will be used when all tabs for this page are closed.',
+            );
 
             if (config?.onUpdate) {
               config.onUpdate(registration);
@@ -115,7 +117,6 @@ export function register(config?: Config) {
       return;
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-misused-promises
     window.addEventListener('load', async () => {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
