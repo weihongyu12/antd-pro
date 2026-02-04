@@ -6,15 +6,19 @@ import { defineConfig } from 'eslint/config';
 import { configs, plugins, rules } from 'eslint-config-airbnb-extended';
 import unicorn from 'eslint-plugin-unicorn';
 import comments from '@eslint-community/eslint-plugin-eslint-comments/configs';
+// @ts-ignore
 import noUnsanitized from 'eslint-plugin-no-unsanitized';
+// @ts-ignore
 import promise from 'eslint-plugin-promise';
 import regexp from 'eslint-plugin-regexp';
 import jsdoc from 'eslint-plugin-jsdoc';
 
 import reactHooks from 'eslint-plugin-react-hooks';
+// @ts-ignore
 import reactPerf from 'eslint-plugin-react-perf';
 import tanstackQuery from '@tanstack/eslint-plugin-query';
 import reactRefresh from 'eslint-plugin-react-refresh';
+// @ts-ignore
 import risXss from 'eslint-plugin-risxss';
 
 import node from 'eslint-plugin-n';
@@ -112,13 +116,20 @@ const typescriptConfig = defineConfig([
       // 以下规则不适合 Ant Design
       '@typescript-eslint/no-floating-promises': 'off',
 
-      'react/require-default-props': [
-        rules?.react?.base?.rules['react/require-default-props'][0],
-        {
-          ...rules?.react?.base?.rules['react/require-default-props'][1],
-          functions: 'defaultArguments',
-        },
-      ],
+      'react/require-default-props': (() => {
+        const baseRule = rules?.react?.base?.rules?.['react/require-default-props'];
+        if (baseRule && Array.isArray(baseRule) && baseRule.length >= 2) {
+          const [ruleLevel, ruleConfig] = baseRule;
+          return [
+            ruleLevel,
+            {
+              ...(typeof ruleConfig === 'object' && ruleConfig !== null ? ruleConfig : {}),
+              functions: 'defaultArguments',
+            },
+          ];
+        }
+        return 'off';
+      })(),
     },
   },
 ]);
