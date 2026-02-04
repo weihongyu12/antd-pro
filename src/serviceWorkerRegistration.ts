@@ -1,20 +1,16 @@
-// This optional code is used to register a service worker.
-// register() is not called by default.
+// 这段可选代码用于注册 Service Worker
+// register() 默认情况下不会被调用
 
-// This lets the app load faster on subsequent visits in production, and gives
-// it offline capabilities. However, it also means that developers (and users)
-// will only see deployed updates on subsequent visits to a page, after all the
-// existing tabs open on the page have been closed, since previously cached
-// resources are updated in the background.
+// 这能让应用在后续访问时加载更快，并提供离线功能。但这也意味着开发者（和用户）
+// 只有在关闭所有打开的页面标签后才能看到部署的更新，因为之前缓存的资源会在后台更新。
 
-// To learn more about the benefits of this model and instructions on how to
-// opt-in, read https://cra.link/PWA
+// 要了解更多关于此模型的好处以及如何选择加入的说明，请阅读 https://cra.link/PWA
 
 const isLocalhost = Boolean(
   globalThis.location.hostname === 'localhost'
-    // [::1] is the IPv6 localhost address.
+    // [::1] 是 IPv6 本地主机地址
     || globalThis.location.hostname === '[::1]'
-    // 127.0.0.0/8 are considered localhost for IPv4.
+    // 127.0.0.0/8 被视为 IPv4 的本地主机
     || /^127(?:\.(?:25[0-5]|2[0-4]\d|[01]?\d{1,2})){3}$/.test(globalThis.location.hostname),
 );
 
@@ -40,23 +36,19 @@ async function registerValidSW(swUrl: string, config?: Config) {
       installingWorker.addEventListener('statechange', () => {
         if (installingWorker.state === 'installed') {
           if (navigator.serviceWorker.controller) {
-            // At this point, the updated precached content has been fetched,
-            // but the previous service worker will still serve the older
-            // content until all client tabs are closed.
-            console.log(
-              'New content is available and will be used when all tabs for this page are closed.',
-            );
+            // 此时，已获取更新的预缓存内容，
+            // 但之前的 Service Worker 仍会提供旧内容，直到所有页面标签关闭
+            console.log('新内容可用，所有标签页关闭后将使用新内容。');
 
             if (config?.onUpdate) {
               config.onUpdate(registration);
             }
           } else {
-            // At this point, everything has been precached.
-            // It's the perfect time to display a
-            // "Content is cached for offline use." message.
-            console.log('Content is cached for offline use.');
+            // 此时，所有内容都已预缓存
+            // 是显示"内容已缓存供离线使用"消息的最佳时机
+            console.log('内容已缓存供离线使用。');
 
-            // Execute callback
+            // 执行回调
             if (config?.onSuccess) {
               config.onSuccess(registration);
             }
@@ -65,7 +57,7 @@ async function registerValidSW(swUrl: string, config?: Config) {
       });
     });
   } catch (error) {
-    console.error('Error during service worker registration:', error);
+    console.error('Service worker 注册期间出错:', error);
   }
 }
 
@@ -76,12 +68,12 @@ async function registerValidSW(swUrl: string, config?: Config) {
  */
 async function checkValidServiceWorker(swUrl: string, config?: Config) {
   try {
-    // Check if the service worker can be found. If it can't reload the page.
+    // 检查是否能找到 Service Worker。如果找不到则重新加载页面
     const response = await fetch(swUrl, {
       headers: { 'Service-Worker': 'script' },
     });
 
-    // Ensure service worker exists, and that we really are getting a JS file.
+    // 确保 Service Worker 存在，且我们确实获得了一个 JS 文件
     const contentType = response.headers.get('content-type');
 
     // 如果 SW 不存在或不是 JS，注销并刷新页面
@@ -89,16 +81,16 @@ async function checkValidServiceWorker(swUrl: string, config?: Config) {
       response.status === 404
         || (contentType != null && !contentType.includes('javascript'))
     ) {
-      // No service worker found. Probably a different app. Reload the page.
+      // 没找到 Service Worker。可能是不同的应用。重新加载页面
       const registration = await navigator.serviceWorker.ready;
       await registration.unregister();
       globalThis.location.reload();
     } else {
-      // Service worker found. Proceed as normal.
+      // 找到了 Service Worker。按正常流程执行
       await registerValidSW(swUrl, config);
     }
   } catch {
-    console.log('No internet connection found. App is running in offline mode.');
+    console.log('未找到网络连接。应用正在离线模式下运行。');
   }
 }
 
@@ -108,12 +100,11 @@ async function checkValidServiceWorker(swUrl: string, config?: Config) {
  */
 export function register(config?: Config) {
   if (process.env.NODE_ENV === 'production' && 'serviceWorker' in navigator) {
-    // The URL constructor is available in all browsers that support SW.
+    // 所有支持 SW 的浏览器都提供 URL 构造函数
     const publicUrl = new URL(process.env.PUBLIC_URL!, globalThis.location.href);
     if (publicUrl.origin !== globalThis.location.origin) {
-      // Our service worker won't work if PUBLIC_URL is on a different origin
-      // from what our page is served on. This might happen if a CDN is used to
-      // serve assets; see https://github.com/facebook/create-react-app/issues/2374
+      // 如果 PUBLIC_URL 与页面服务来源不同，则我们的 Service Worker 将无法工作
+      // 这可能在使用 CDN 提供资源时发生；参见 https://github.com/facebook/create-react-app/issues/2374
       return;
     }
 
@@ -121,19 +112,18 @@ export function register(config?: Config) {
       const swUrl = `${process.env.PUBLIC_URL}/service-worker.js`;
 
       if (isLocalhost) {
-        // This is running on localhost. Let's check if a service worker still exists or not.
+        // 正在本地主机上运行。让我们检查 Service Worker 是否仍然存在
         await checkValidServiceWorker(swUrl, config);
 
         try {
-          // Add some additional logging to localhost, pointing developers to the
-          // service worker/PWA documentation.
+          // 添加一些额外的日志到本地主机，指引开发者到 Service Worker/PWA 文档
           await navigator.serviceWorker.ready;
-          console.log('This web app is being served cache-first by a service worker.');
+          console.log('此 Web 应用正由 Service Worker 以缓存优先的方式提供服务。');
         } catch (error) {
-          console.error('Service worker ready error:', error);
+          console.error('Service worker 准备就绪错误:', error);
         }
       } else {
-        // Is not localhost. Just register service worker
+        // 不是本地主机。只需注册 Service Worker
         await registerValidSW(swUrl, config);
       }
     });
